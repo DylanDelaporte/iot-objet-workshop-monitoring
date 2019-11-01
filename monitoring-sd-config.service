@@ -1,0 +1,13 @@
+[Unit]
+Description=Monitoring system design config
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/local/bin/config/getconfig.sh
+
+[Install]
+WantedBy=multi-user.target

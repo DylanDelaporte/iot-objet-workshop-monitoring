@@ -2,8 +2,8 @@
 
 DIR=/media/pi
 
-FILE_TO_COPY=server.url
-DESTINATION_DIR=/home/pi/research/object
+FILE_TO_COPY=soft-config.yml
+DESTINATION_DIR=/usr/local/bin/monitoring-sd
 
 COUNT_DIRS=$(ls -1 ${DIR} | wc -l)
 
@@ -26,6 +26,8 @@ do
 		if [ -f "$filepath" ]; then
 			echo "file on $directory directory"
 			cp "$filepath" $DESTINATION_DIR
+
+			systemctl restart monitoring-sd
 		fi
 	done
 
