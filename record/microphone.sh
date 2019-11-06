@@ -20,7 +20,7 @@ do
 	echo "recording 10s of microphone $MICROPHONE"
 	timestamp=$(date +%s)
 	current_date=$(date '+%Y-%m-%d_%H-%M-%S')
-	file=${current_date}_10_audio.wav
+	file=${MICROPHONE}_${current_date}_10_audio.wav
 
 	arecord -D plughw:$MICROPHONE,$SUB_MICROPHONE -d 10 -c 1 -f cd $TEMPORARY_DIRECTORY/$file
 	mv $TEMPORARY_DIRECTORY/$file $DATA_DIRECTORY
