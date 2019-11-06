@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=/usr/local/bin/config/getconfig.sh
+ExecStart=/bin/bash /usr/local/bin/monitoring-sd/config/getconfig.sh
 
 [Install]
 WantedBy=multi-user.target

@@ -112,6 +112,8 @@ def backup_data():
 
 
 try:
+    logging.info("starting service")
+
     with open("hard-config.yml", 'r') as hard_config_file:
         hard_config = yaml.load(hard_config_file, Loader=yaml.FullLoader)
 
