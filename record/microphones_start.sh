@@ -2,18 +2,20 @@
 
 DATA_DIRECTORY=$1
 TEMPORARY_DIRECTORY=$2
-#PID_FILE=microphones.pid
 
-#./killsources.sh $PID_FILE
+MICROPHONES_LIST=$(arecord --list-devices | grep card | grep -v Camera)
 
-MICROPHONES_LIST=$(arecord --list-devices | grep card | grep -v Camera | cut -c6)
+DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+IFS=$'\n'
 
-for microphone in $MICROPHONES_LIST
+for microphone_line in $MICROPHONES_LIST
 do
-	echo "Microphone $microphone,0"
-	$DIR/microphone.sh $microphone 0 $DATA_DIRECTORY $TEMPORARY_DIRECTORY &
+  microphone_id=$(echo "$microphone_line" | awk '{print substr($2, 1, length($2) - 1)}')
+  microphone_name=$(echo "$microphone_line" | awk '{print $3}')
 
-	#echo $! >> $PID_FILE
+  microphone_usb_name=$(awk '/'"$microphone_name"'[ ]*\]/{getline; print substr($3, 1, length($3) - 1)}' /proc/asound/cards)
+
+	echo "Microphone [$microphone_name] from $microphone_usb_name has connection id: $microphone_id,0"
+	"$DIR"/microphone.sh "$microphone_id" 0 "$microphone_usb_name" "$DATA_DIRECTORY" "$TEMPORARY_DIRECTORY" &
 done

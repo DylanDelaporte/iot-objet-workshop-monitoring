@@ -1,4 +1,4 @@
-ping_url: "http://52.243.45.192:3000/api/object/ping"
+ping_url: "http://13.78.101.245:3000/api/object/ping"
 ping_timer: 10
-backup_url: "http://52.243.45.192:3000/api/object/backup"
+backup_url: "http://13.78.101.245:3000/api/object/backup"
 backup_timer: 5
