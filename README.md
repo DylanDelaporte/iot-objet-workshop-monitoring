@@ -6,7 +6,7 @@ application which controls the service and every connected object.
 
 ## Setup
 
-### Requirements ffmpeg
+### Requirements
 
 - FFMPEG
 [Tutorial for Raspberry Pi](http://jollejolles.com/installing-ffmpeg-with-h264-support-on-raspberry-pi/)
@@ -16,7 +16,9 @@ application which controls the service and every connected object.
 
 ```console
 cd /usr/local/bin
-sudo git clone git@github.com:hiekata-lab/IoT-MonitoringSD.git
+sudo git clone git@github.com:DylanDelaporte/iot-object-workshop-monitoring.git
+
+co iot-object-workshop-monitoring
 
 sudo cp monitoring-sd.service /etc/systemd/system
 sudo systemctl enable monitoring-sd
@@ -31,4 +33,5 @@ sudo reboot
 ## Future updates
 
 - Deb package
-- GPIO sensors
+- Record other data (sensors)
+- Led status information

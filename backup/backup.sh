@@ -1,10 +1,15 @@
 #!/bin/bash
+#
+# backup: zip all files whithin a directory
+# Author: Dylan Delaporte
+# Github: https://github.com/DylanDelaporte
 
 if [ "$#" -ne 3 ]; then
 	echo "Missing arguments"
 	exit 1
 fi
 
+#constants
 DATA_DIRECTORY=$1
 BACKUP_DIRECTORY=$2
 TEMPORARY_DIRECTORY=$3
@@ -23,17 +28,16 @@ ZIP_FILE=backup_$DATE.zip
 
 ls -A1 $DATA_DIRECTORY/* > $OUT_FILE
 
+#zipping files takes time, to avoid any corrupted file the file is first saved into a temporary directory
+#then moved to the right place
 zip $TEMPORARY_DIRECTORY/$ZIP_FILE -@ < $OUT_FILE
 mv $TEMPORARY_DIRECTORY/$ZIP_FILE $BACKUP_DIRECTORY
 
+#remove zipped files from directory
 while IFS= read -r line
 do
-	echo "backed up file $line"
+	echo "file $line saved into zip, now removing from directory"
 	rm $line
-	
-	#mv $line /home/pi/research/test_output
 done < "$OUT_FILE"
-
-#cp $BACKUP_PATH/backup_$DATE.zip /home/pi/research/test_output
 
 rm $OUT_FILE

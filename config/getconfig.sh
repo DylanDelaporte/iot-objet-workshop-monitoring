@@ -1,5 +1,10 @@
 #!/bin/bash
+#
+# getconfig: retrieve soft-config.yml from plugged USB key
+# Author: Dylan Delaporte
+# Github: https://github.com/DylanDelaporte
 
+#constants, modify only if needed
 LOG_FILE=/var/log/monitoring-sd-config.log
 CACHE_FILE=/tmp/monitoring-sd-config.cache
 
@@ -10,6 +15,7 @@ DESTINATION_DIR=/usr/local/bin/monitoring-sd
 
 touch $CACHE_FILE
 
+#every 10 seconds check for new USB keys
 while :
 do
 	echo "checking if file exists within directories of $DIR" >> $LOG_FILE
@@ -29,16 +35,16 @@ do
 	do
 	  EXPLORED_DIRECTORY=$(echo "$OLD_DIRS" | grep "${directory}$")
 
-	  echo "test: '$EXPLORED_DIRECTORY'" >> $LOG_FILE
-
+	  #copy the file only one time from the USB, check if the key has alreay been explored previously
 	  if [ -z "$EXPLORED_DIRECTORY" ]
 	  then
       filepath=$directory/$FILE_TO_COPY
 
       if [ -f "$filepath" ]; then
-        echo "file on $directory directory" >> $LOG_FILE
+        echo "file in $directory directory" >> $LOG_FILE
         cp "$filepath" $DESTINATION_DIR
 
+        #when the file is found, restart the service
         systemctl restart monitoring-sd
       fi
     fi

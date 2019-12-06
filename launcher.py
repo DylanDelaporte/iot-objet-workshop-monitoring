@@ -1,3 +1,8 @@
+#
+# launcher: main script that communicates with remote server, starts data collecting process
+# Author: Dylan Delaporte
+# Github: https://github.com/DylanDelaporte
+
 import threading
 import requests
 import json
@@ -11,6 +16,7 @@ DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(DIR_PATH)
 
+# log file
 logging.basicConfig(filename="/var/log/monitoring-sd.log", level=logging.DEBUG)
 
 config = {}
@@ -20,6 +26,7 @@ recording = False
 backing_up = False
 
 
+# each x seconds contacts the server to know what action to take
 def ping_server():
     global PING_TIMER
     global PING_URL
@@ -77,6 +84,7 @@ def ping_server():
         logging.debug("not recording")
 
 
+# each x second, when the data collecting system is being used backup files into a zip file and upload it to the server
 def backup_data():
     global BACKUP_TIMER
     global BACKUP_URL
@@ -114,6 +122,7 @@ def backup_data():
 try:
     logging.info("starting service")
 
+    # read of the configuration file containing information of directory paths
     with open("hard-config.yml", 'r') as hard_config_file:
         hard_config = yaml.load(hard_config_file, Loader=yaml.FullLoader)
 
@@ -130,6 +139,7 @@ try:
     if not os.path.exists(TEMPORARY_DIRECTORY):
         os.mkdir(TEMPORARY_DIRECTORY)
 
+    # read of the configuration file containing information of the remote server
     with open("soft-config.yml", 'r') as soft_config_file:
         soft_config = yaml.load(soft_config_file, Loader=yaml.FullLoader)
 
