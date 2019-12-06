@@ -1,4 +1,4 @@
-# iot-object-monitoring-system
+# iot-object-workshop-monitoring
 
 The service provide an efficient way to collect photo and audio
 in real-time from a camera and microphone. Another repository contains the server-side
