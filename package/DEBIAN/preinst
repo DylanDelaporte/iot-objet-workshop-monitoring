@@ -1,0 +1,26 @@
+#!/bin/bash
+
+pip3 install requests
+pip3 install jsonlib-python3
+pip3 install pyyaml
+pip3 install getmac
+
+if ! [ -x "$(command -v git)" ]; then
+  echo 'FFMPEG is not installed in the device, this step might take few minutes' >&2
+
+  cd /tmp/
+
+  git clone --depth 1 https://code.videolan.org/videolan/x264.git
+  cd x264/
+  ./configure --host=arm-unknown-linux-gnueabi --enable-static --disable-opencl
+  make -j4
+  make install
+
+  cd /tmp/
+
+  git clone git://source.ffmpeg.org/ffmpeg --depth=1
+  cd ffmpeg/
+  ./configure --arch=armel --target-os=linux --enable-gpl --enable-libx264 --enable-nonfree
+  make -j4
+  make install
+fi

@@ -1,0 +1,13 @@
+[Unit]
+Description=Monitoring system design
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+ExecStart=/usr/bin/env python3 /usr/local/bin/iot-object-workshop-monitoring/launcher.py
+
+[Install]
+WantedBy=multi-user.target

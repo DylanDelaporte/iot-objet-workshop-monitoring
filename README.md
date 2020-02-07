@@ -18,7 +18,7 @@ application which controls the service and every connected object.
 cd /usr/local/bin
 sudo git clone git@github.com:DylanDelaporte/iot-object-workshop-monitoring.git
 
-co iot-object-workshop-monitoring
+cd iot-object-workshop-monitoring
 
 sudo cp monitoring-sd.service /etc/systemd/system
 sudo systemctl enable monitoring-sd
@@ -29,9 +29,12 @@ sudo systemctl enable monitoring-sd-config
 sudo reboot
 ```
 
+#Timezone
+
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
 
 ## Future updates
 
-- Deb package
 - Record other data (sensors)
 - Led status information

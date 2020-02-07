@@ -1,0 +1,6 @@
+iot-object-workshop-monitoring (1.0.1) UNRELEASED; urgency=low
+
+   * Added dependency package
+   * FFMPEG check before installation
+
+  -- Dylan Delaporte <dylan.delaporte06@gmail.com>  Tue, 14 Jan 2020 15:40:00 +0900
