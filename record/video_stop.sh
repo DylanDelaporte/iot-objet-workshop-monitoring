@@ -4,7 +4,7 @@
 # Author: Dylan Delaporte
 # Github: https://github.com/DylanDelaporte
 
-PROCESSES=$(ps aux | grep -v 'grep' | grep 'video_start.sh\|ffmpeg' | awk '{print $2}')
+PROCESSES=$(ps aux | grep -v 'grep' | grep 'video.sh' | awk '{print $2}')
 
 for process in $PROCESSES
 do

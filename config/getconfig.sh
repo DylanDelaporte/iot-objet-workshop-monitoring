@@ -11,7 +11,7 @@ CACHE_FILE=/tmp/monitoring-sd-config.cache
 DIR=/media/pi
 
 FILE_TO_COPY=soft-config.yml
-DESTINATION_DIR=/usr/local/bin/monitoring-sd
+DESTINATION_DIR=/usr/local/bin/iot-object-workshop-monitoring
 
 touch $CACHE_FILE
 
@@ -25,32 +25,36 @@ do
   if [ "$COUNT_DIRS" -eq 0 ]
   then
     echo "There is no dirs" >> $LOG_FILE
-    exit 1
-  fi
+    echo "" > $CACHE_FILE
+  else
+    DIRS=$(ls -1 -d ${DIR}/*)
+    OLD_DIRS=$(cat $CACHE_FILE)
 
-	DIRS=$(ls -1 -d ${DIR}/*)
-	OLD_DIRS=$(cat $CACHE_FILE)
+    for directory in $DIRS
+    do
+      EXPLORED_DIRECTORY=$(echo "$OLD_DIRS" | grep "${directory}$")
 
-	for directory in $DIRS
-	do
-	  EXPLORED_DIRECTORY=$(echo "$OLD_DIRS" | grep "${directory}$")
+      #copy the file only one time from the USB, check if the key has alreay been explored previously
+      if [ -z "$EXPLORED_DIRECTORY" ]
+      then
+        echo "exploring $directory" >> $LOG_FILE
 
-	  #copy the file only one time from the USB, check if the key has alreay been explored previously
-	  if [ -z "$EXPLORED_DIRECTORY" ]
-	  then
-      filepath=$directory/$FILE_TO_COPY
+        filepath=$directory/$FILE_TO_COPY
 
-      if [ -f "$filepath" ]; then
-        echo "file in $directory directory" >> $LOG_FILE
-        cp "$filepath" $DESTINATION_DIR
+        if [ -f "$filepath" ]; then
+          echo "file in $directory directory" >> $LOG_FILE
+          cp "$filepath" $DESTINATION_DIR
 
-        #when the file is found, restart the service
-        systemctl restart monitoring-sd
+          #when the file is found, restart the service
+          systemctl restart monitoring-sd
+        fi
+      else
+        echo "$directory already explored previously" >> $LOG_FILE
       fi
-    fi
-	done
+    done
 
-	echo "$DIRS" > $CACHE_FILE
+    echo "$DIRS" > $CACHE_FILE
+  fi
 
 	sleep 10s
 done

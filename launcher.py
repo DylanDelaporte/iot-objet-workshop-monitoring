@@ -65,7 +65,7 @@ def ping_server():
 
             logging.info("start recording")
 
-            subprocess.Popen(["sudo", "record/cameras_start.sh", DATA_DIRECTORY])
+            subprocess.Popen(["sudo", "record/video_start.sh", DATA_DIRECTORY, TEMPORARY_DIRECTORY])
             subprocess.Popen(["sudo", "record/microphones_start.sh", DATA_DIRECTORY, TEMPORARY_DIRECTORY])
 
             backup_data()
@@ -78,7 +78,7 @@ def ping_server():
 
             logging.info("stop recording")
 
-            subprocess.Popen(["sudo", "record/cameras_stop.sh"])
+            subprocess.Popen(["sudo", "record/video_stop.sh"])
             subprocess.Popen(["sudo", "record/microphones_stop.sh"])
 
         logging.debug("not recording")
@@ -96,6 +96,8 @@ def backup_data():
     global TEMPORARY_DIRECTORY
 
     logging.info("Backup data to server at {}".format(BACKUP_URL))
+
+    logging.debug("backing_up: " + str(backing_up))
 
     if backing_up:
         threading.Timer(BACKUP_TIMER, backup_data).start()
@@ -149,6 +151,9 @@ try:
     BACKUP_URL = soft_config["backup_url"]
     BACKUP_TIMER = soft_config["backup_timer"]
 
+    TIME_ZONE = soft_config["time_zone"]
+    NTP_SERVER = soft_config["ntp_server"]
+
     MAC_ADDRESS = getmac.get_mac_address(interface="eth0")
 
     logging.info(str({"data_directory": DATA_DIRECTORY,
@@ -157,8 +162,28 @@ try:
                       "ping_timer": PING_TIMER,
                       "backup_url": BACKUP_URL,
                       "backup_timer": BACKUP_TIMER,
-                      "mac_address": MAC_ADDRESS}))
+                      "mac_address": MAC_ADDRESS,
+                      "time_zone": TIME_ZONE,
+                      "ntp_server": NTP_SERVER}))
+
+    # to ensure accurate timestamp the device is update with last timezone and date
+    update_time_zone_process = subprocess.Popen(["sudo", "cp", "/usr/share/zoneinfo/" + TIME_ZONE, "/etc/localtime"],
+            stdout=subprocess.PIPE)
+
+    (update_time_zone_process_output, update_time_zone_process_error) = update_time_zone_process.communicate()
+    update_time_zone_process.wait()
+
+    logging.info(update_time_zone_process_output)
+
+    update_ntp_process = subprocess.Popen(["sudo", "ntpdate", NTP_SERVER],
+            stdout=subprocess.PIPE)
+
+    (update_ntp_process_output, update_ntp_process_error) = update_ntp_process.communicate()
+    update_ntp_process.wait()
+
+    logging.info(update_ntp_process_output)
 
     ping_server()
-except:
-    print("Error")
+except Exception as e:
+    logging.error("Error")
+    logging.error(e)
