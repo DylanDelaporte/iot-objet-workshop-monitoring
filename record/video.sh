@@ -19,6 +19,9 @@ do
 	current_date=$(date '+%Y-%m-%d_%H-%M-%S')
 	file=${CAMERA_USB_NAME}_${current_date}_30_video.mp4
 
-	ffmpeg -f v4l2 -framerate 30 -s 1280x720 -pixel_format yuyv422 -i "$CAMERA" -c libx264 -crf 30 -filter:v fps=fps=5 -flags +global_header -t 00:00:30 "$TEMPORARY_DIRECTORY/$file"
+	ffmpeg -f v4l2 -framerate 30 -s 1280x720 -pixel_format yuyv422\
+	-i "$CAMERA" -c libx264 -crf 30 -filter:v fps=fps=5\
+	-flags +global_header -t 00:00:30 "$TEMPORARY_DIRECTORY/$file"
+
 	mv "$TEMPORARY_DIRECTORY/$file" "$DATA_DIRECTORY"
 done
