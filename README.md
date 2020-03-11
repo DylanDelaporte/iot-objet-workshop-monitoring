@@ -18,7 +18,7 @@ application which controls the service and every connected object.
 cd /usr/local/bin
 sudo git clone https://github.com/dylandelaporte/iot-objet-workshop-monitoring.git
 
-cd iot-object-workshop-monitoring
+cd iot-objet-workshop-monitoring
 
 sudo cp monitoring-sd.service /etc/systemd/system
 sudo systemctl enable monitoring-sd

@@ -7,7 +7,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec=1
-ExecStart=/bin/bash /usr/local/bin/iot-object-workshop-monitoring/config/getconfig.sh
+ExecStart=/bin/bash /usr/local/bin/iot-objet-workshop-monitoring/config/getconfig.sh
 
 [Install]
 WantedBy=multi-user.target
