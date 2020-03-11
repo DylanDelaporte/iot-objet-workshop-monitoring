@@ -6,17 +6,17 @@ application which controls the service and every connected object.
 
 ## Setup
 
-### Requirements
+### Manual installation
+#### Requirements
 
 - FFMPEG
 [Tutorial for Raspberry Pi](http://jollejolles.com/installing-ffmpeg-with-h264-support-on-raspberry-pi/)
 - Python3
 
-### Configure services
-
-```console
+#### Commands
+```$bash
 cd /usr/local/bin
-sudo git clone git@github.com:DylanDelaporte/iot-object-workshop-monitoring.git
+sudo git clone https://github.com/dylandelaporte/iot-objet-workshop-monitoring.git
 
 cd iot-object-workshop-monitoring
 
@@ -29,12 +29,15 @@ sudo systemctl enable monitoring-sd-config
 sudo reboot
 ```
 
-#Timezone
+### Package installation
+```$bash
+wget https://github.com/dylandelaporte/iot-objet-workshop-monitoring/releases/download/1.0.0/object.deb
+dpkg -i object.deb
+```
 
+### Configuration
+
+Update the following file: `/usr/local/bin/iot-objet-workshop-monitoring/soft-config.yml`
+
+#Timezones
 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
-
-## Future updates
-
-- Record other data (sensors)
-- Led status information
