@@ -31,13 +31,21 @@ sudo reboot
 
 ### Package installation
 ```$bash
-wget https://github.com/dylandelaporte/iot-objet-workshop-monitoring/releases/download/1.0.0/object.deb
+wget https://github.com/dylandelaporte/iot-objet-workshop-monitoring/releases/download/1.0.1/object.deb
 dpkg -i object.deb
 ```
 
 ### Configuration
 
 Update the following file: `/usr/local/bin/iot-objet-workshop-monitoring/soft-config.yml`
+
+
+### Mac address
+The server application needs the mac address of the object machine as an identification.
+
+```$bash
+ifconfig -a | awk '/^(eth|wlan)[0-9]:/ { iface=$1; getline; getline; getline; mac=$2 } /ether/ { print iface, mac }'
+```
 
 #Timezones
 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
